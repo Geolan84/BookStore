@@ -1,3 +1,5 @@
+from time import sleep
+
 from fastapi import FastAPI, Depends
 import sqlalchemy as sa
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -18,7 +20,10 @@ def read_root():
 @app.get("/books")
 async def get_all_books(session: AsyncSession = Depends(sql_session)):
     result = await session.execute(sa.select(Book))
-    return result.scalars().all()
+    sleep(4)
+    return {
+        'books': result.scalars().all()
+    }
 
 
 @app.get("/books/{bookId}")
